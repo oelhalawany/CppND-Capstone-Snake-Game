@@ -12,13 +12,23 @@ vector
 SDL.h
 /home/workspace/CppND-Capstone-Snake-Game/src/SDL.h
 
-/home/workspace/CppND-Capstone-Snake-Game/src/snake.cpp
-snake.h
-/home/workspace/CppND-Capstone-Snake-Game/src/snake.h
-cmath
--
+/home/workspace/CppND-Capstone-Snake-Game/src/renderer.cpp
+renderer.h
+/home/workspace/CppND-Capstone-Snake-Game/src/renderer.h
 iostream
 -
+string
+-
+
+/home/workspace/CppND-Capstone-Snake-Game/src/renderer.h
+vector
+-
+SDL.h
+/home/workspace/CppND-Capstone-Snake-Game/src/SDL.h
+snake.h
+/home/workspace/CppND-Capstone-Snake-Game/src/snake.h
+obstacle.h
+/home/workspace/CppND-Capstone-Snake-Game/src/obstacle.h
 
 /home/workspace/CppND-Capstone-Snake-Game/src/snake.h
 vector
