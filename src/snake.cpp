@@ -5,8 +5,8 @@
 void Snake::Update() {
   SDL_Point prev_cell{
       static_cast<int>(head_x),
-      static_cast<int>(
-          head_y)};  // We first capture the head's cell before updating.
+      static_cast<int>(head_y)};  // We first capture the head's cell before updating.
+  
   UpdateHead();
   SDL_Point current_cell{
       static_cast<int>(head_x),
@@ -59,7 +59,18 @@ void Snake::UpdateBody(SDL_Point &current_head_cell, SDL_Point &prev_head_cell) 
   for (auto const &item : body) {
     if (current_head_cell.x == item.x && current_head_cell.y == item.y) {
       alive = false;
+      break;
     }
+
+    //Check if snake hit an obstacle
+    for (SDL_Point const &obstacle_obj : ob.obstacle_objs) {
+    	if((obstacle_obj.x == item.x && obstacle_obj.y == item.y)
+           || (obstacle_obj.x == current_head_cell.x && obstacle_obj.y == current_head_cell.y))
+        {
+        	alive = false;
+         	 break;
+        }
+  	}
   }
 }
 
