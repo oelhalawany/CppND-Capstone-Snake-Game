@@ -1,5 +1,6 @@
 #include "game.h"
 #include <iostream>
+#include <thread>
 #include "SDL.h"
 #include "obstacle.h"
 
@@ -12,7 +13,7 @@ Game::Game(std::size_t grid_width, std::size_t grid_height)
 }
 
 void Game::Run(Controller const &controller, Renderer &renderer,
-               std::size_t target_frame_duration, bool bObstacles) {
+               std::size_t target_frame_duration, bool bObstacles, bool bSpeed) {
   Uint32 title_timestamp = SDL_GetTicks();
   Uint32 frame_start;
   Uint32 frame_end;
@@ -20,6 +21,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   int frame_count = 0;
   bool running = true;
   addObstacles = bObstacles;
+  addSpeed = bSpeed;
 
   while (running) {
     frame_start = SDL_GetTicks();
@@ -68,14 +70,22 @@ void Game::PlaceFood() {
 }
 
 void Game::PlaceObstacle() {
-  int x, y;
+  int x, y, x1,y1;
   while (true) {
     x = random_w(engine);
     y = random_h(engine);
+    x1 = random_w(engine);
+    y1 = random_h(engine);
     // Check that the location is not occupied by a snake item before placing
     // food.
     if (!snake.SnakeCell(x, y) && !obstacle.ObstacleCell(x,y)) {
-      obstacle.AddObstacle(x,y);
+      std::thread t1 = std::thread(&Obstacle::AddObstacle, &obstacle, x,y);
+      t1.join();
+      if(x != x1 && y !=y1){
+      std::thread t2 = std::thread(&Obstacle::AddObstacle, &obstacle, x1,y1);
+      t2.join();
+      }
+      
       return;
     }
   }
@@ -96,9 +106,12 @@ void Game::Update() {
     if(addObstacles){
     	PlaceObstacle();
     }
+    if(addSpeed)
+    {
+        snake.speed += 0.02;
+    }
     // Grow snake and increase speed.
     snake.GrowBody();
-    snake.speed += 0.02;
   }
 }
 
