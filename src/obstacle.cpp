@@ -1,13 +1,38 @@
 #include "obstacle.h"
 #include <cmath>
 #include <iostream>
+#include <thread>
+#include <chrono>
+
+std::mutex Obstacle::_mtx;
 
 void Obstacle::AddObstacle(float x, float y) {
+  	
+  	  std::unique_lock<std::mutex> lck(_mtx);
+      lck.unlock();
+   	  
+  	  std::this_thread::sleep_for(std::chrono::milliseconds(100)); 
   
-   	  SDL_Point obstacle_obj;
+  	  SDL_Point obstacle_obj;
       obstacle_obj.x = static_cast<int>(x);
       obstacle_obj.y = static_cast<int>(y);
-  	  obstacle_objs.push_back(obstacle_obj);
+  	  
+  	  lck.lock();
+      obstacle_objs.push_back(obstacle_obj);
+  	  numberOfObstacles++;
+  	  lck.unlock();
+  
+  	 if(numberOfObstacles>=20)
+     {
+     	RemoveObstacle();
+     }
+}
+
+
+void Obstacle::RemoveObstacle()
+{
+    std::unique_lock<std::mutex> lck(_mtx);
+  	obstacle_objs.erase(obstacle_objs.begin());
 }
 
 // Inefficient method to check if cell is occupied by Obstacle.

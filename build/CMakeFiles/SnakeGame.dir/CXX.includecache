@@ -21,6 +21,8 @@ SDL.h
 /home/workspace/CppND-Capstone-Snake-Game/src/SDL.h
 obstacle.h
 /home/workspace/CppND-Capstone-Snake-Game/src/obstacle.h
+future
+-
 
 /home/workspace/CppND-Capstone-Snake-Game/src/game.h
 random
@@ -41,6 +43,8 @@ vector
 -
 SDL.h
 /home/workspace/CppND-Capstone-Snake-Game/src/SDL.h
+mutex
+-
 
 /home/workspace/CppND-Capstone-Snake-Game/src/renderer.h
 vector

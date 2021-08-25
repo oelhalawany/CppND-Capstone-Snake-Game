@@ -27,6 +27,7 @@ class Game {
   std::uniform_int_distribution<int> random_h;
 
   int score{0};
+  float NumberOfObstaclesToAdd = 1;
   
   bool addObstacles{false};
   bool addSpeed{false};
@@ -34,6 +35,7 @@ class Game {
   void PlaceFood();
   void PlaceObstacle();
   void Update();
+  bool isEmptyCell(int x, int y);
 };
 
 #endif

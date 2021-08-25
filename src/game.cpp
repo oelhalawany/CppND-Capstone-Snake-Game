@@ -3,6 +3,7 @@
 #include <thread>
 #include "SDL.h"
 #include "obstacle.h"
+#include <future> 
 
 Game::Game(std::size_t grid_width, std::size_t grid_height)
     : snake(grid_width, grid_height, obstacle),
@@ -61,7 +62,7 @@ void Game::PlaceFood() {
     y = random_h(engine);
     // Check that the location is not occupied by a snake item before placing
     // food.
-    if (!snake.SnakeCell(x, y) && !obstacle.ObstacleCell(x,y)) {
+    if (isEmptyCell(x,y)) {
       food.x = x;
       food.y = y;
       return;
@@ -70,26 +71,20 @@ void Game::PlaceFood() {
 }
 
 void Game::PlaceObstacle() {
-  int x, y, x1,y1;
+  int x, y;
   while (true) {
     x = random_w(engine);
     y = random_h(engine);
-    x1 = random_w(engine);
-    y1 = random_h(engine);
     // Check that the location is not occupied by a snake item before placing
     // food.
-    if (!snake.SnakeCell(x, y) && !obstacle.ObstacleCell(x,y)) {
+    if (isEmptyCell(x,y)) {
       std::thread t1 = std::thread(&Obstacle::AddObstacle, &obstacle, x,y);
       t1.join();
-      if(x != x1 && y !=y1){
-      std::thread t2 = std::thread(&Obstacle::AddObstacle, &obstacle, x1,y1);
-      t2.join();
-      }
-      
-      return;
-    }
+      return; 
+    }   
   }
 }
+
 
 void Game::Update() {
   if (!snake.alive) return;
@@ -104,7 +99,13 @@ void Game::Update() {
     score++;
     PlaceFood();
     if(addObstacles){
-    	PlaceObstacle();
+      for(int i = 0; i< (int)NumberOfObstaclesToAdd ; i++)
+      {
+        std::async(std::launch::async, &Game::PlaceObstacle, this);
+      }
+      if(NumberOfObstaclesToAdd<5){
+         NumberOfObstaclesToAdd += 1;
+      }
     }
     if(addSpeed)
     {
@@ -113,6 +114,15 @@ void Game::Update() {
     // Grow snake and increase speed.
     snake.GrowBody();
   }
+}
+
+bool Game::isEmptyCell(int x, int y)
+{
+	if (!snake.SnakeCell(x, y) && !obstacle.ObstacleCell(x,y))
+    {
+    	return true;
+    }
+  return false;
 }
 
 int Game::GetScore() const { return score; }
