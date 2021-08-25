@@ -2,6 +2,10 @@
 #include "controller.h"
 #include "game.h"
 #include "renderer.h"
+#include <fstream>
+#include <string>
+#include <mutex>
+#include <memory>
 
 int main() {
   constexpr std::size_t kFramesPerSecond{60};
@@ -11,14 +15,32 @@ int main() {
   constexpr std::size_t kGridWidth{32};
   constexpr std::size_t kGridHeight{32};
   
+  std::mutex mtx;
   bool bObstacles = false;
   bool bSpeed = false;
   std::string input = "";
+  
+  std::ofstream highscoreFile;
+  std::unique_ptr<int> currentHighscore(new int);
+  *currentHighscore = 0;
+  std::string line;
+  
+  //Read current high score
+  std::unique_lock<std::mutex> lck(mtx);
+  std::ifstream myfile ("Score.txt");
+  if (myfile.is_open())
+  {
+    getline(myfile,line);
+    *currentHighscore = std::stoi(line);
+    myfile.close();
+  }
+  lck.unlock();
   
   Renderer renderer(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight);
   Controller controller;
   Game game(kGridWidth, kGridHeight);
   
+  //Input from user to choose game mode
   std::cout<<"Choose Mode:"<<std::endl;
   std::cout<<"Speed Increase: Press 'S'"<<std::endl;
   std::cout<<"Adding Obstacles: Press 'X'"<<std::endl;
@@ -40,9 +62,19 @@ int main() {
   }
   
   
-  game.Run(controller, renderer, kMsPerFrame, bObstacles, bSpeed);
+  game.Run(controller, renderer, kMsPerFrame, bObstacles, bSpeed, currentHighscore);
   std::cout << "Game has terminated successfully!\n";
   std::cout << "Score: " << game.GetScore() << "\n";
   std::cout << "Size: " << game.GetSize() << "\n";
+  
+  //Check if current score is higher than current highscore to store it as new high score!
+  if(*currentHighscore < game.GetScore()){
+    lck.lock();
+    highscoreFile.open ("Score.txt");
+    highscoreFile << game.GetScore();
+    highscoreFile.close();
+    lck.unlock();
+   }
+  
   return 0;
 }

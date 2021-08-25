@@ -10,8 +10,6 @@ void Obstacle::AddObstacle(float x, float y) {
   	
   	  std::unique_lock<std::mutex> lck(_mtx);
       lck.unlock();
-   	  
-  	  std::this_thread::sleep_for(std::chrono::milliseconds(100)); 
   
   	  SDL_Point obstacle_obj;
       obstacle_obj.x = static_cast<int>(x);
@@ -22,7 +20,7 @@ void Obstacle::AddObstacle(float x, float y) {
   	  numberOfObstacles++;
   	  lck.unlock();
   
-  	 if(numberOfObstacles>=20)
+  	 if(numberOfObstacles>=10)
      {
      	RemoveObstacle();
      }
@@ -33,9 +31,10 @@ void Obstacle::RemoveObstacle()
 {
     std::unique_lock<std::mutex> lck(_mtx);
   	obstacle_objs.erase(obstacle_objs.begin());
+    numberOfObstacles--;
 }
 
-// Inefficient method to check if cell is occupied by Obstacle.
+//Method to check if cell is occupied by Obstacle.
 bool Obstacle::ObstacleCell(int x, int y) {
   
   for (SDL_Point const &obstacle_obj : obstacle_objs) {

@@ -9,7 +9,7 @@ class Snake {
  public:
   enum class Direction { kUp, kDown, kLeft, kRight };
 
-  Snake(int grid_width, int grid_height, Obstacle &obj)
+  Snake(int grid_width, int grid_height, Obstacle &obj) //Pass obstacle by reference to Snake Class
       : grid_width(grid_width),
         grid_height(grid_height),
         head_x(grid_width / 2),
@@ -37,7 +37,7 @@ class Snake {
   bool growing{false};
   int grid_width;
   int grid_height;
-  Obstacle &ob;
+  Obstacle &ob; //Reference to Obstacle Instance
 };
 
 #endif

@@ -12,7 +12,7 @@ class Game {
  public:
   Game(std::size_t grid_width, std::size_t grid_height);
   void Run(Controller const &controller, Renderer &renderer,
-           std::size_t target_frame_duration, bool addObstacles, bool bSpeed);
+           std::size_t target_frame_duration, bool addObstacles, bool bSpeed, std::unique_ptr<int> & highscore);
   int GetScore() const;
   int GetSize() const;
 
@@ -31,6 +31,7 @@ class Game {
   
   bool addObstacles{false};
   bool addSpeed{false};
+  int currHighScore{0};
 
   void PlaceFood();
   void PlaceObstacle();

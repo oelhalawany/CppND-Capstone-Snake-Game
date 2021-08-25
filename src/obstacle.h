@@ -8,7 +8,8 @@
 class Obstacle {
  public:
 
-  Obstacle(){}
+  Obstacle(){}//Constructor
+  ~Obstacle(){}//Destructor
 
   bool ObstacleCell(int x, int y);
   void AddObstacle(float x, float y);
@@ -16,7 +17,7 @@ class Obstacle {
   std::vector<SDL_Point> obstacle_objs;
   
  private:
-  static std::mutex _mtx;
+  static std::mutex _mtx; //Mutex to lock access to number of obstacles and vector of obstacles
   void RemoveObstacle();
   int numberOfObstacles{0};
 
