@@ -15,6 +15,8 @@ int main() {
   constexpr std::size_t kGridWidth{32};
   constexpr std::size_t kGridHeight{32};
   
+  const std::string ScoreFilePath = "../Score.txt";
+  
   std::mutex mtx;
   bool bObstacles = false;
   bool bSpeed = false;
@@ -27,7 +29,7 @@ int main() {
   
   //Read current high score
   std::unique_lock<std::mutex> lck(mtx);
-  std::ifstream myfile ("Score.txt");
+  std::ifstream myfile (ScoreFilePath);
   if (myfile.is_open())
   {
     getline(myfile,line);
@@ -70,7 +72,7 @@ int main() {
   //Check if current score is higher than current highscore to store it as new high score!
   if(*currentHighscore < game.GetScore()){
     lck.lock();
-    highscoreFile.open ("Score.txt");
+    highscoreFile.open (ScoreFilePath);
     highscoreFile << game.GetScore();
     highscoreFile.close();
     lck.unlock();

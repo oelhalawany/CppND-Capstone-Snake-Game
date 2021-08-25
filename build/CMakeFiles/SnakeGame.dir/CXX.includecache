@@ -10,20 +10,6 @@
 snake.h
 /home/workspace/CppND-Capstone-Snake-Game/src/snake.h
 
-/home/workspace/CppND-Capstone-Snake-Game/src/game.cpp
-game.h
-/home/workspace/CppND-Capstone-Snake-Game/src/game.h
-iostream
--
-thread
--
-SDL.h
-/home/workspace/CppND-Capstone-Snake-Game/src/SDL.h
-obstacle.h
-/home/workspace/CppND-Capstone-Snake-Game/src/obstacle.h
-future
--
-
 /home/workspace/CppND-Capstone-Snake-Game/src/game.h
 random
 -
@@ -37,6 +23,24 @@ snake.h
 /home/workspace/CppND-Capstone-Snake-Game/src/snake.h
 obstacle.h
 /home/workspace/CppND-Capstone-Snake-Game/src/obstacle.h
+
+/home/workspace/CppND-Capstone-Snake-Game/src/main.cpp
+iostream
+-
+controller.h
+/home/workspace/CppND-Capstone-Snake-Game/src/controller.h
+game.h
+/home/workspace/CppND-Capstone-Snake-Game/src/game.h
+renderer.h
+/home/workspace/CppND-Capstone-Snake-Game/src/renderer.h
+fstream
+-
+string
+-
+mutex
+-
+memory
+-
 
 /home/workspace/CppND-Capstone-Snake-Game/src/obstacle.h
 vector
